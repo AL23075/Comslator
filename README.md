@@ -1,11 +1,12 @@
 # Comslator
 
 Member:
-UNO TOMOKI
-KOTAKI NAOSHIGE
-PHAM QUOC CUONG
-TRAN CAO BAO PHUC
-NGUYEN MANH QUAN
+
+<p>UNO TOMOKI</p>
+<p>KOTAKI NAOSHIGE</p>
+<p>PHAM QUOC CUONG</p>
+<p>TRAN CAO BAO PHUC</p>
+<p>NGUYEN MANH QUAN</p>
 
 ### Cloning the repository
 
