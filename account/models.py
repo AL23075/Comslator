@@ -36,7 +36,7 @@ class User(AbstractBaseUser):
     email      = models.EmailField(unique=True, null=True)
     password   = models.CharField(max_length=100)
     birth_date = models.DateTimeField(auto_now_add=True)
-    image      = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=None)
+    image      = models.ImageField(upload_to='media/user_icon', height_field=None, width_field=None, max_length=None)
     status     = models.CharField(choices=STATUS, max_length=50)
     is_superuser = models.BooleanField(default=False)
 
