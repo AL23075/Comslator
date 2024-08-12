@@ -1,34 +1,33 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/favicon.ico' %}"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+<<<<<<< HEAD
     <title>StudyBuddy - Find study partners around the world!</title>
 </head>0
+=======
+    <title>Comslator - Connect Us Closer</title>
+  </head>
+>>>>>>> 355e59d4adefead2efe5b5e2711b651e0109da16
 
-<body>
-
-    {% include 'navbar.html' %}
-
-    {% if messages %}
+  <body>
+    {% include 'navbar.html' %} {% if messages %}
     <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
     </ul>
-    {% endif %}
-
-    {% block content %}
-
-
-    {% endblock %}
+    {% endif %} {% block content %} {% endblock %}
 
     <script src="{% static 'js/script.js' %}"></script>
-</body>
-
+  </body>
 </html>
