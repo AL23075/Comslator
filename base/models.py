@@ -99,3 +99,13 @@ class Message(models.Model):
         return self.body[0:50]
     
    
+class Task(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
+    completed_by = models.ManyToManyField(User, related_name='completed_tasks', blank=True)  # Trường mới
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

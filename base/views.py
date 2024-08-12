@@ -128,12 +128,17 @@ def createRoom(request):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
 
-        Room.objects.create(
+        # Tạo room mới
+        room = Room.objects.create(
             host=request.user,
             topic=topic,
             name=request.POST.get('name'),
             description=request.POST.get('description'),
         )
+
+        # Thêm host vào danh sách participants
+        room.participants.add(request.user)
+
         return redirect('home')
 
     context = {'form': form, 'topics': topics}
@@ -241,3 +246,51 @@ def restore_message(request, message_id):
     message.translated_body = None
     message.save()
     return JsonResponse({'original_text': original_text})
+
+@login_required(login_url='login')
+def task_view(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+
+    if request.user not in room.participants.all():
+        messages.error(request, "You are not allowed to view tasks.")
+        return redirect('home')
+    
+    if request.method == 'POST':
+        if request.user == room.host:
+            task_title = request.POST.get('task_title')
+            task_description = request.POST.get('task_description')
+            Task.objects.create(title=task_title, description=task_description, user=request.user, room=room)
+        else:
+            return HttpResponseForbidden("You are not allowed to add tasks.")
+        return redirect('task_view', room_id=room.id)
+
+    tasks = Task.objects.filter(room=room)
+    return render(request, 'base/task.html', {'tasks': tasks, 'room': room})
+
+
+@login_required(login_url='login')
+def toggle_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    
+    # Kiểm tra xem người dùng có phải là thành viên của phòng hay không
+    if request.user not in task.room.participants.all():
+        messages.error(request, "You are not allowed to mark tasks as completed.")
+        return redirect('home')
+    if request.user not in task.completed_by.all():
+        task.completed_by.add(request.user)  # Thêm người dùng vào danh sách hoàn thành
+    else:
+        task.completed_by.remove(request.user)  # Xóa người dùng khỏi danh sách hoàn thành
+    
+    task.save()
+    return redirect('task_view', room_id=task.room.id)
+
+
+@login_required(login_url='login')
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    
+    if request.user != task.room.host:
+        return HttpResponseForbidden("You are not allowed to delete tasks.")
+    
+    task.delete()
+    return redirect('task_view', room_id=task.room.id)

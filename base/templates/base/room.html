@@ -21,6 +21,11 @@
           </a>
           <h3>Study Room</h3>
         </div>
+        <div>
+          <a href="{% url 'task_view' room.id %}">
+             Task 
+          </a>
+        </div>
         {% if room.host == request.user %}
         <div class="room__topRight">
           <a href="{% url 'update-room' room.id %}">

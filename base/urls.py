@@ -24,4 +24,7 @@ urlpatterns = [
 
     path('translate-message/<int:message_id>/<str:target_lang>/', views.translate_message, name='translate-message'),
     path('restore-message/<int:message_id>/', views.restore_message, name='restore-message'),
+    path('room/<int:room_id>/tasks/', views.task_view, name='task_view'),
+    path('tasks/toggle/<int:task_id>/', views.toggle_task, name='toggle_task'),
+    path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
 ]
