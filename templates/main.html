@@ -11,16 +11,74 @@
       type="image/x-icon"
     />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
-<<<<<<< HEAD
-    <title>StudyBuddy - Find study partners around the world!</title>
-</head>0
-=======
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Comslator - Connect Us Closer</title>
+    <style>
+      .toast-container {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 9999;
+          display: flex;
+          flex-direction: column-reverse; 
+          gap: 10px;
+      }
+
+      .toast {
+          min-width: 250px;
+          background-color: #0ed2d9;
+          color: white;
+          padding: 15px;
+          border-radius: 8px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+          opacity: 0;
+          transform: translateX(100%);
+          transition: opacity 0.5s, transform 0.5s;
+      }
+
+      .toast.show {
+          opacity: 1;
+          transform: translateX(0);
+      }
+  </style>
   </head>
->>>>>>> 355e59d4adefead2efe5b5e2711b651e0109da16
 
   <body>
-    {% include 'navbar.html' %} {% if messages %}
+    {% include 'navbar.html' %} 
+    {% block content %}
+    {% endblock %}
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+
+            if (type === 'error') {
+                toast.style.backgroundColor = 'red';
+            } else {
+                toast.style.backgroundColor = 'green';
+            }
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100); // Delay to allow for DOM insertion
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 500); // Allow for transition time
+            }, 2500);
+        }
+
+    {% if messages %}
     <ul class="messages">
       {% for message in messages %}
       <li>{{ message }}</li>
